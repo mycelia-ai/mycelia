@@ -58,10 +58,6 @@ services:
       - nats_exporter
       - prometheus
       - grafana
-
-    networks:
-      - dapr-network
-      - nats-network
-
+      
 volumes:
   nats-data:
