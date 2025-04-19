@@ -1,7 +1,7 @@
 services:
 
   nats:
-    image: nats:2.10-alpine
+    image: nats:2.11
     command: ["-js", "-m", "8222"]
     ports:
       - "4222:4222"
@@ -10,8 +10,8 @@ services:
       - nats-data:/data
 
   dapr_placement:
-    image: "daprio/dapr"
-    command: ["placement"]
+    image: "daprio/placement"
+    command: ["./placement", "--port", "50005"]
     ports:
       - "50005:50005"
 
@@ -24,23 +24,35 @@ services:
 
   grafana:
     image: grafana/grafana
+    environment:
+      - GF_METRICS_ENABLED=true
+      - GF_METRICS_BASIC_AUTH_USERNAME=admin
+      - GF_METRICS_BASIC_AUTH_PASSWORD=admin
     volumes:
       - ./infra/grafana:/var/lib/grafana
     ports:
       - "3001:3000"
 
-  # Example agent (you’ll scale this out per-agent)
-  agent_hello:
-    build: ./agents/agent_hello
-    environment:
-      - DAPR_APP_ID=agent-hello
-      - DAPR_HTTP_PORT=3500
-      - DAPR_GRPC_PORT=50001
+  nats_exporter:
+    image: natsio/prometheus-nats-exporter:latest
+    command: ["-varz", "http://nats:8222"]
     ports:
-      - "8000:8000"
+      - "7777:7777"
     depends_on:
       - nats
-      - dapr_placement
+
+  # Example agent (you’ll scale this out per-agent)
+  # agent_hello:
+  #   build: ./agents/agent_hello
+  #   environment:
+  #     - DAPR_APP_ID=agent-hello
+  #     - DAPR_HTTP_PORT=3500
+  #     - DAPR_GRPC_PORT=50001
+  #   ports:
+  #     - "8000:8000"
+  #   depends_on:
+  #     - nats
+  #     - dapr_placement
 
 volumes:
   nats-data:

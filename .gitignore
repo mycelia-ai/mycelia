@@ -1,3 +1,40 @@
+# Environment files
+.env
+.env.*
+.env.example
+
+# Python
 *.pyc
 __pycache__/
-.env
+
+# Node.js
+node_modules/
+
+# Build artifacts
+dist/
+build/
+
+# Logs
+*.log
+
+# Docker
+*.override.yml
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Grafana
+infra/grafana/plugins/
+infra/grafana/*.db
+infra/grafana/csv/
+infra/grafana/pdf/
+infra/grafana/png/
+
+# Temporary files
+*.tmp
+*.swp
+*.bak
+
+# Generated documentation
+.mycelia/.docs/

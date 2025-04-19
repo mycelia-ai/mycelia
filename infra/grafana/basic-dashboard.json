@@ -1,0 +1,148 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "Production-Ready NATS Monitoring Dashboard",
+    "panels": [
+      {
+        "type": "stat",
+        "title": "Total Connections",
+        "targets": [
+          {
+            "expr": "gnatsd_varz_connections",
+            "refId": "A"
+          }
+        ],
+        "gridPos": {
+          "x": 0,
+          "y": 0,
+          "w": 6,
+          "h": 4
+        }
+      },
+      {
+        "type": "stat",
+        "title": "Total Messages Sent",
+        "targets": [
+          {
+            "expr": "gnatsd_varz_out_msgs",
+            "refId": "B"
+          }
+        ],
+        "gridPos": {
+          "x": 6,
+          "y": 0,
+          "w": 6,
+          "h": 4
+        }
+      },
+      {
+        "type": "stat",
+        "title": "Total Messages Received",
+        "targets": [
+          {
+            "expr": "gnatsd_varz_in_msgs",
+            "refId": "C"
+          }
+        ],
+        "gridPos": {
+          "x": 12,
+          "y": 0,
+          "w": 6,
+          "h": 4
+        }
+      },
+      {
+        "type": "stat",
+        "title": "Memory Usage",
+        "targets": [
+          {
+            "expr": "gnatsd_varz_mem",
+            "refId": "D"
+          }
+        ],
+        "gridPos": {
+          "x": 18,
+          "y": 0,
+          "w": 6,
+          "h": 4
+        },
+        "fieldConfig": {
+          "defaults": {
+            "unit": "bytes",
+            "decimals": 2
+          }
+        }
+      },
+      {
+        "type": "graph",
+        "title": "Message Rate (Sent)",
+        "targets": [
+          {
+            "expr": "rate(gnatsd_varz_out_msgs[1m])",
+            "legendFormat": "Messages Sent/sec",
+            "refId": "E"
+          }
+        ],
+        "gridPos": {
+          "x": 0,
+          "y": 4,
+          "w": 12,
+          "h": 6
+        }
+      },
+      {
+        "type": "graph",
+        "title": "Message Rate (Received)",
+        "targets": [
+          {
+            "expr": "rate(gnatsd_varz_in_msgs[1m])",
+            "legendFormat": "Messages Received/sec",
+            "refId": "F"
+          }
+        ],
+        "gridPos": {
+          "x": 12,
+          "y": 4,
+          "w": 12,
+          "h": 6
+        }
+      },
+      {
+        "type": "graph",
+        "title": "Slow Consumers",
+        "targets": [
+          {
+            "expr": "gnatsd_varz_slow_consumers",
+            "legendFormat": "Slow Consumers",
+            "refId": "G"
+          }
+        ],
+        "gridPos": {
+          "x": 0,
+          "y": 10,
+          "w": 12,
+          "h": 6
+        }
+      },
+      {
+        "type": "graph",
+        "title": "CPU Usage",
+        "targets": [
+          {
+            "expr": "gnatsd_varz_cpu",
+            "legendFormat": "CPU Usage",
+            "refId": "H"
+          }
+        ],
+        "gridPos": {
+          "x": 12,
+          "y": 10,
+          "w": 12,
+          "h": 6
+        }
+      }
+    ],
+    "schemaVersion": 16,
+    "version": 0
+  }
+}

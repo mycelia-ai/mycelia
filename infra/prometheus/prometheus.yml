@@ -1,0 +1,21 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'grafana'
+    basic_auth:
+      username: 'admin'
+      password: 'admin'
+    static_configs:
+      - targets: ['grafana:3000']
+
+  - job_name: 'nats_exporter'
+    static_configs:
+      - targets: ['nats_exporter:7777']
+        labels:
+          service: 'nats-exporter'
+          metrics_path: '/metrics'
