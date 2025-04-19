@@ -1,0 +1,15 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: state-supabase
+  namespace: default
+spec:
+  type: state.postgresql
+  version: v1
+  metadata:
+  - name: connectionString
+    value: "postgres://username:password@supabase-host:5432/database"
+  - name: tableName
+    value: "state_store"
+  - name: schemaName
+    value: "public"

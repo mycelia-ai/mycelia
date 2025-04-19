@@ -19,3 +19,9 @@ scrape_configs:
         labels:
           service: 'nats-exporter'
           metrics_path: '/metrics'
+
+  - job_name: 'agent_hello'
+    static_configs:
+      - targets: ['agent_hello:8000']
+        labels:
+          service: 'agent_hello'

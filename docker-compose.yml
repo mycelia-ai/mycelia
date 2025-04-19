@@ -1,5 +1,4 @@
 services:
-
   nats:
     image: nats:2.11
     command: ["-js", "-m", "8222"]
@@ -42,17 +41,27 @@ services:
       - nats
 
   # Example agent (you’ll scale this out per-agent)
-  # agent_hello:
-  #   build: ./agents/agent_hello
-  #   environment:
-  #     - DAPR_APP_ID=agent-hello
-  #     - DAPR_HTTP_PORT=3500
-  #     - DAPR_GRPC_PORT=50001
-  #   ports:
-  #     - "8000:8000"
-  #   depends_on:
-  #     - nats
-  #     - dapr_placement
+  agent_hello:
+    build:
+      context: ./agents/agent_hello
+      dockerfile: Dockerfile
+    environment:
+      - DAPR_APP_ID=agent-hello
+      - DAPR_HTTP_PORT=3500
+      - DAPR_GRPC_PORT=50001
+    ports:
+      - "8000:8000" # Application port
+      - "3500:3500" # Dapr HTTP port
+    depends_on:
+      - nats
+      - dapr_placement
+      - nats_exporter
+      - prometheus
+      - grafana
+
+    networks:
+      - dapr-network
+      - nats-network
 
 volumes:
   nats-data:
