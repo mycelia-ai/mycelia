@@ -1,0 +1,46 @@
+services:
+
+  nats:
+    image: nats:2.10-alpine
+    command: ["-js", "-m", "8222"]
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+    volumes:
+      - nats-data:/data
+
+  dapr_placement:
+    image: "daprio/dapr"
+    command: ["placement"]
+    ports:
+      - "50005:50005"
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./infra/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana
+    volumes:
+      - ./infra/grafana:/var/lib/grafana
+    ports:
+      - "3001:3000"
+
+  # Example agent (you’ll scale this out per-agent)
+  agent_hello:
+    build: ./agents/agent_hello
+    environment:
+      - DAPR_APP_ID=agent-hello
+      - DAPR_HTTP_PORT=3500
+      - DAPR_GRPC_PORT=50001
+    ports:
+      - "8000:8000"
+    depends_on:
+      - nats
+      - dapr_placement
+
+volumes:
+  nats-data:
